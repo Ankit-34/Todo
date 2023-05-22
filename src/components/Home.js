@@ -6,118 +6,7 @@ import {EditOutlined, DeleteOutlined} from '@ant-design/icons'
 
 const Home = () => {
     
-    var data = [
-        // {
-        //     key : 1,
-        //     task : "Finish Assignment-1",
-        //     date : "2022-02-22"
-        // },
-        // {
-        //     key : 2,
-        //     task : "Finish Assignment-2",
-        //     date : "2022-08-01"
-        // },
-        // {
-        //     key : 3,
-        //     task : "Finish Assignment-3",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 4,
-        //     task : "Finish Assignment-4",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 5,
-        //     task : "Finish Assignment-5",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 6,
-        //     task : "Finish Assignment-6",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 7,
-        //     task : "Finish Assignment-7",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 8,
-        //     task : "Finish Assignment-8",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 9,
-        //     task : "Finish Assignment-9",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 10,
-        //     task : "Finish Assignment-10",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 11,
-        //     task : "Finish Assignment-11",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 12,
-        //     task : "Finish Assignment-12",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 13,
-        //     task : "Finish Assignment-13",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 14,
-        //     task : "Finish Assignment-14",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 15,
-        //     task : "Finish Assignment-15",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 16,
-        //     task : "Finish Assignment-16",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 17,
-        //     task : "Finish Assignment-17",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 18,
-        //     task : "Finish Assignment-18",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 19,
-        //     task : "Finish Assignment-19",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 20,
-        //     task : "Finish Assignment-20",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 21,
-        //     task : "Finish Assignment-21",
-        //     date : "2023-05-05"
-        // },
-        // {
-        //     key : 22,
-        //     task : "Finish Assignment-22",
-        //     date : "2023-05-05"
-        // }
-    ]   
+    var data = []   
 
     const columns = [
         {
@@ -131,7 +20,6 @@ const Home = () => {
             dataIndex: 'date',
             sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
             sortDirections: ['ascend']
-            
         },
         {
             key:'3',
