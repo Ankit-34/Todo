@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.invalid{
+  color: red;
+}
+
+.valid{
+  color: rgb(68, 192, 30);
+}
+
+.valid, .invalid{
+  letter-spacing: 2px;
+}

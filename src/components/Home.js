@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Input, Modal, Table } from 'antd'
+import moment from 'moment';
 import {EditOutlined, DeleteOutlined} from '@ant-design/icons'
 // import ColumnGroup from 'antd/es/table/ColumnGroup';
 
@@ -122,12 +123,15 @@ const Home = () => {
         {
             key:'1',
             title:"Task",
-            dataIndex: 'task'
+            dataIndex: 'task',
         },
         {
             key:'2',
             title:"Date",
-            dataIndex: 'date'
+            dataIndex: 'date',
+            sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+            sortDirections: ['ascend']
+            
         },
         {
             key:'3',
@@ -149,6 +153,7 @@ const Home = () => {
         }
     ];
 
+    const date = new Date().toJSON().slice(0, 10);
 
     const [dataSource, setDataSource] = useState(data); 
     const [totalTask, setTotalTask] = useState(0);
@@ -172,7 +177,9 @@ const Home = () => {
     const onDeleteStudent = (record) => {
         Modal.confirm({
             title: "Are you sure ?",
+            okText: "delete",
             onOk: () => {
+                setTotalTask(totalTask-1);
                 setDataSource((prev)=>{
                     return prev.filter(student => student.key !== record.key);
                 });
@@ -192,10 +199,10 @@ const Home = () => {
             columns={columns}
             dataSource={dataSource}  
             pagination={{ total:totalTask, defaultPageSize: 3, onChange: (page)=>{
-                // setCurrPage(page);
-                // setDataSource(dataSource.slice((page*3)-3,page*3));  
+                setCurrPage(page); 
                 console.log("Page changed data : ", dataSource.slice((page*3)-3,page*3));
             }}}
+            rowClassName={(record) => date>record?.date ? 'invalid' :  'valid'}
         >
         </Table>            
         <Modal
@@ -205,6 +212,7 @@ const Home = () => {
                 resetEditing();
             }}
             onOk={()=>{
+
                 setDataSource((prev)=>{
                     return prev.map(student => {
                         if(student.key=== editingStudent.key)
@@ -227,12 +235,13 @@ const Home = () => {
                             ...prev, 
                             task:e.target.value}
                     })
-                    // setKey(key+1);
                 }}
             />
             <Input  
+                key={key}
                 type='date'
                 value={editingStudent?.date} 
+                className={()=>date>newStudent?.date ? 'invalid' :  'valid'}
                 onChange={(e)=>{
                     setEditingStudent((prev)=>{
                         return {
@@ -247,6 +256,7 @@ const Home = () => {
         <Modal
             title="Add student"
             open={isNewStudent}
+            okText= "Save"
             onCancel={()=>setIsNewStudent(false)}
             onOk={()=>{
                     setDataSource([...dataSource, newStudent]);
