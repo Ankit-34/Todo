@@ -3,7 +3,6 @@ import { Button, Input, Modal, Table, DatePicker, Tooltip } from 'antd'
 import moment from 'moment';
 import {EditOutlined, DeleteOutlined} from '@ant-design/icons'
 import '../Style/Home.css'
-// import ColumnGroup from 'antd/es/table/ColumnGroup';
 
 const Home = () => {
     
@@ -104,8 +103,6 @@ const Home = () => {
         if(dates===null)
         {   
             setFilterTriger(false);
-            // setTotalTask("ori. length : ", dataSource.length);
-            // console.log("Closed");
         }
         else{
             const startDate = actDates[0];
@@ -121,14 +118,7 @@ const Home = () => {
             });
             setTotalTask(filtered.length);
         }
-            // console.log(filtered);
-        }
-
-    // const handleDateChange = (dates, dateStrings) => {
-    //     console.log('Selected Dates:', dates);
-    //     console.log('Formatted Dates:', dateStrings);
-    //   };
-  
+    }
 
 
   return (
@@ -137,12 +127,6 @@ const Home = () => {
          className='datepicker'
          onChange={handleDateChange} 
         />
-        {/* <Button className='clr-filter-btn' onClick={()=>{
-                setFilterTriger(false);
-                setFilteredData([]);
-            }}>
-            Clear filter
-        </Button> */}
 
         <Button className='add-btn' onClick={handleAddStudent}>
             Add Task
@@ -151,7 +135,6 @@ const Home = () => {
         <Table
         className='table'
             columns={columns}
-            // dataSource={dataSource} 
             dataSource={filterTriger ? filteredData : dataSource} 
             pagination={{ total:totalTask, defaultPageSize: 3, onChange: (page)=>{
                 setCurrPage(page); 
@@ -200,7 +183,6 @@ const Home = () => {
                 }}
             />
             <Input  
-                // key={key}
                 type='date'
                 value={editingStudent?.date} 
                 className={()=>date>newStudent?.date ? 'invalid' :  'valid'}
@@ -223,7 +205,6 @@ const Home = () => {
             onCancel={()=>setIsNewStudent(false)}
             onOk={()=>{
                     setDataSource([...dataSource, newStudent]);
-                    // data.push(newStudent);
                     setTotalTask(totalTask+1);
                     setKey(key+1);
                     setIsNewStudent(false);
