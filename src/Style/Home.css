@@ -25,6 +25,18 @@
     border: 2px solid black !important;
 }
 
+.clr-filter-btn{
+    margin: 10px;
+    padding: 5px;
+    border: 2px solid black !important;
+    transform: translate(80%, 6%);
+    background-color: black !important;
+    color: white !important;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
 .add-btn{
     float: right;
     position: relative;
@@ -40,11 +52,11 @@
     outline: none;
 }
 
-.add-btn:hover{
+.add-btn:hover, .clr-filter-btn:hover{
     color: white !important;
     border: none;
     outline: none;
-    text-shadow: 1px 1px 1px white;
+    text-shadow: 1px .2px .2px white;
 }
 
 .table{

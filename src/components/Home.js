@@ -68,6 +68,7 @@ const Home = () => {
     const [editingStudent, setEditingStudent] = useState(null);
     const [isNewStudent, setIsNewStudent] = useState(false);
     const [newStudent, setNewStudent] = useState({key : key, task : String, date : String});
+    const [filterTriger, setFilterTriger] = useState(false);
                 
 
     const handleAddStudent = () => {
@@ -99,23 +100,35 @@ const Home = () => {
 
     const [filteredData, setFilteredData] = useState([]);
 
-    const handleDateChange = (dates) => {
-        // console.log("dates : ",)
-        if (dates && dates.length === 2) {
-        const startDate = dates[0];
-        const endDate = dates[1];
-        // console.log("data here : ",dataSource);
-        const filtered = dataSource.filter((item) => {
-            console.log("item", item);
-            const itemDate = moment(item.date);
-            return itemDate.isSameOrAfter(startDate) && itemDate.isSameOrBefore(endDate);
-        });
-        setFilteredData([...filtered]);
-        console.log("Filtered : ", filtered);
-        } else {
-      setFilteredData([]);
-    }
-  };
+    const handleDateChange = (dates, actDates) => {
+        if(dates===null)
+        {   
+            setFilterTriger(false);
+            // setTotalTask("ori. length : ", dataSource.length);
+            // console.log("Closed");
+        }
+        else{
+            const startDate = actDates[0];
+            const endDate = actDates[1];
+            
+            const filtered = dataSource.filter((item) => {
+                const itemDate = item.date;
+                return itemDate>=startDate && itemDate<=endDate;
+            });
+            setFilterTriger(true);
+            setFilteredData(()=>{
+                return filtered
+            });
+            setTotalTask(filtered.length);
+        }
+            // console.log(filtered);
+        }
+
+    // const handleDateChange = (dates, dateStrings) => {
+    //     console.log('Selected Dates:', dates);
+    //     console.log('Formatted Dates:', dateStrings);
+    //   };
+  
 
 
   return (
@@ -124,6 +137,12 @@ const Home = () => {
          className='datepicker'
          onChange={handleDateChange} 
         />
+        {/* <Button className='clr-filter-btn' onClick={()=>{
+                setFilterTriger(false);
+                setFilteredData([]);
+            }}>
+            Clear filter
+        </Button> */}
 
         <Button className='add-btn' onClick={handleAddStudent}>
             Add Task
@@ -133,7 +152,7 @@ const Home = () => {
         className='table'
             columns={columns}
             // dataSource={dataSource} 
-            dataSource={filteredData.length > 0 ? filteredData : dataSource} 
+            dataSource={filterTriger ? filteredData : dataSource} 
             pagination={{ total:totalTask, defaultPageSize: 3, onChange: (page)=>{
                 setCurrPage(page); 
                 console.log("Page changed data : ", dataSource.slice((page*3)-3,page*3));
