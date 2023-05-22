@@ -92,6 +92,12 @@ const Home = () => {
         });
     };
 
+    const fetchDataForCurrPage = (page) => {
+        const altered = dataSource.slice((page*2)-2,page*2);
+        setFilterTriger(true);
+        setFilteredData(altered);
+    }
+
     const resetEditing = () => {
         setIsEditing(false);
         setEditingStudent(false);
@@ -103,6 +109,8 @@ const Home = () => {
         if(dates===null)
         {   
             setFilterTriger(false);
+            setDataSource(dataSource);
+            setTotalTask(dataSource.length);
         }
         else{
             const startDate = actDates[0];
@@ -136,9 +144,10 @@ const Home = () => {
         className='table'
             columns={columns}
             dataSource={filterTriger ? filteredData : dataSource} 
-            pagination={{ total:totalTask, defaultPageSize: 3, onChange: (page)=>{
+            pagination={{ total:totalTask, defaultPageSize: 2, onChange: (page)=>{
                 setCurrPage(page); 
-                console.log("Page changed data : ", dataSource.slice((page*3)-3,page*3));
+                fetchDataForCurrPage(page);
+                // console.log("Page changed data : ", dataSource.slice((page*3)-3,page*3));
             }}}
             rowClassName={(record) => date>record?.date ? 'invalid' :  'valid'}
         >
