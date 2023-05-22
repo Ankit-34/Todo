@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Input, Modal, Table } from 'antd'
+import { Button, Input, Modal, Table, DatePicker, Tooltip } from 'antd'
 import moment from 'moment';
 import {EditOutlined, DeleteOutlined} from '@ant-design/icons'
+import '../Style/Home.css'
 // import ColumnGroup from 'antd/es/table/ColumnGroup';
 
 const Home = () => {
@@ -27,14 +28,30 @@ const Home = () => {
             render: (record) => {
                 return (
                     <>
-                        <EditOutlined onClick={()=>{
-                            onEditStudent(record);
-                        }}/>
-                        <DeleteOutlined 
-                            onClick={()=>{
-                            onDeleteStudent(record);
-                        }}
-                        />
+                        <Tooltip title="Edit Task">
+                            <EditOutlined onClick={()=>{
+                                onEditStudent(record);
+                            }}
+                            style={{
+                                margin: "5px",
+                                color: "black",
+                                fontSize: "18px"
+                                }}
+                            />
+                        </Tooltip>
+
+                        <Tooltip title="Delete Task">
+                            <DeleteOutlined 
+                                onClick={()=>{
+                                    onDeleteStudent(record);
+                                }}
+                                style={{
+                                    margin: "5px",
+                                    color: "red",
+                                    fontSize: "17px",
+                                }}
+                            />
+                        </Tooltip>
                     </>
                 );
             },
@@ -65,7 +82,7 @@ const Home = () => {
     const onDeleteStudent = (record) => {
         Modal.confirm({
             title: "Are you sure ?",
-            okText: "delete",
+            okText: "Delete",
             onOk: () => {
                 setTotalTask(totalTask-1);
                 setDataSource((prev)=>{
@@ -80,12 +97,43 @@ const Home = () => {
         setEditingStudent(false);
     }
 
+    const [filteredData, setFilteredData] = useState([]);
+
+    const handleDateChange = (dates) => {
+        // console.log("dates : ",)
+        if (dates && dates.length === 2) {
+        const startDate = dates[0];
+        const endDate = dates[1];
+        // console.log("data here : ",dataSource);
+        const filtered = dataSource.filter((item) => {
+            console.log("item", item);
+            const itemDate = moment(item.date);
+            return itemDate.isSameOrAfter(startDate) && itemDate.isSameOrBefore(endDate);
+        });
+        setFilteredData([...filtered]);
+        console.log("Filtered : ", filtered);
+        } else {
+      setFilteredData([]);
+    }
+  };
+
 
   return (
-    <div>
+    <div className='container'>
+        <DatePicker.RangePicker 
+         className='datepicker'
+         onChange={handleDateChange} 
+        />
+
+        <Button className='add-btn' onClick={handleAddStudent}>
+            Add Task
+        </Button>
+
         <Table
+        className='table'
             columns={columns}
-            dataSource={dataSource}  
+            // dataSource={dataSource} 
+            dataSource={filteredData.length > 0 ? filteredData : dataSource} 
             pagination={{ total:totalTask, defaultPageSize: 3, onChange: (page)=>{
                 setCurrPage(page); 
                 console.log("Page changed data : ", dataSource.slice((page*3)-3,page*3));
@@ -94,6 +142,9 @@ const Home = () => {
         >
         </Table>            
         <Modal
+            style={{
+                    width: "50%"
+                }}
             title="Edit Student"
             open={isEditing}
             onCancel={()=>{
@@ -116,6 +167,10 @@ const Home = () => {
             }}
         >
             <Input 
+                style={{
+                    padding: "5px",
+                    margin: "10px 0"
+                }}
                 value={editingStudent?.task}
                 onChange={(e)=>{
                     setEditingStudent((prev)=>{
@@ -126,7 +181,7 @@ const Home = () => {
                 }}
             />
             <Input  
-                key={key}
+                // key={key}
                 type='date'
                 value={editingStudent?.date} 
                 className={()=>date>newStudent?.date ? 'invalid' :  'valid'}
@@ -145,6 +200,7 @@ const Home = () => {
             title="Add student"
             open={isNewStudent}
             okText= "Save"
+            okButtonProps={{ style: { backgroundColor: 'black', color: 'white' } }} 
             onCancel={()=>setIsNewStudent(false)}
             onOk={()=>{
                     setDataSource([...dataSource, newStudent]);
@@ -155,6 +211,11 @@ const Home = () => {
             }}
         >
                 <Input 
+
+                    style={{
+                        padding: "5px",
+                        margin: "10px 0"
+                    }}
                     type='text'
                     name='text'
                     placeholder='Add your task'
@@ -185,9 +246,7 @@ const Home = () => {
 
         </Modal>
         
-        <Button onClick={handleAddStudent}>
-            Add New Student
-        </Button>
+        
     </div>
   )
 }

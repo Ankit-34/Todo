@@ -9,7 +9,7 @@ const Protected = (props) => {
     useEffect(() => {
         if(localStorage.getItem('accessToken') !== "ankit.ganatra")
             navigate('/login');
-    });
+    },[]);
 
   return (
     <>
