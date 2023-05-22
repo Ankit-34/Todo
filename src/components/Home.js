@@ -94,8 +94,9 @@ const Home = () => {
 
     const fetchDataForCurrPage = (page) => {
         const altered = dataSource.slice((page*2)-2,page*2);
-        setFilterTriger(true);
+        // setFilterTriger(true);
         setFilteredData(altered);
+        // setDataSource(altered);
     }
 
     const resetEditing = () => {
