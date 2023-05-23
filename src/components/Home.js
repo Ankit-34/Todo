@@ -3,11 +3,11 @@ import { Button, Input, Modal, Table, DatePicker, Tooltip } from 'antd'
 import moment from 'moment';
 import {EditOutlined, DeleteOutlined} from '@ant-design/icons'
 import '../Style/Home.css'
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 const Home = () => {
     
     var data = []   
-
     const columns = [
         {
             key:'1',
@@ -68,7 +68,25 @@ const Home = () => {
     const [isNewStudent, setIsNewStudent] = useState(false);
     const [newStudent, setNewStudent] = useState({key : key, task : String, date : String});
     const [filterTriger, setFilterTriger] = useState(false);
-                
+
+    const [searchParams, setSearchParams] = useSearchParams('');
+    const location = useLocation();
+    
+    useEffect(()=>{
+        if(searchParams.get('pageno')!==null)    setCurrPage(searchParams.get('pageno'));
+    }, [])
+
+    useEffect(()=>{
+        localStorage.setItem('list', JSON.stringify(dataSource));
+    }, [dataSource])
+
+    useEffect(()=>{
+        setCurrPage(searchParams.get('pageno'));
+        fetchDataForCurrPage(currPage);
+        console.log("Going for fetch ....")
+    }, [location.search])
+
+    console.log();
 
     const handleAddStudent = () => {
         setIsNewStudent(true);
@@ -93,10 +111,9 @@ const Home = () => {
     };
 
     const fetchDataForCurrPage = (page) => {
-        const altered = dataSource.slice((page*2)-2,page*2);
-        // setFilterTriger(true);
+        console.log("Data for page", page , " : ", JSON.parse(localStorage.getItem('list')));
+        const altered = JSON.parse(localStorage.getItem('list')).slice((page*2)-2,page*2);
         setFilteredData(altered);
-        // setDataSource(altered);
     }
 
     const resetEditing = () => {
@@ -145,10 +162,18 @@ const Home = () => {
         className='table'
             columns={columns}
             dataSource={filterTriger ? filteredData : dataSource} 
-            pagination={{ total:totalTask, defaultPageSize: 2, onChange: (page)=>{
+            pagination={{ total:totalTask, defaultPageSize: 2, current:currPage, onChange: (page)=>{
+
+
+
+                setSearchParams(`pageno=${page}`);
+                // console.log("Done")
+
+
+
+
                 setCurrPage(page); 
                 fetchDataForCurrPage(page);
-                // console.log("Page changed data : ", dataSource.slice((page*3)-3,page*3));
             }}}
             rowClassName={(record) => date>record?.date ? 'invalid' :  'valid'}
         >
@@ -218,6 +243,7 @@ const Home = () => {
                     setTotalTask(totalTask+1);
                     setKey(key+1);
                     setIsNewStudent(false);
+                    setSearchParams(`pageno=${currPage}`);
             }}
         >
                 <Input 

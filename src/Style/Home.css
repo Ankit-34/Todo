@@ -40,12 +40,13 @@
 .add-btn{
     float: right;
     width: 8%;
+    min-width: 110px;
     position: relative;
     /* padding: 10px; */
     letter-spacing: 1px;
     background-color: black;
-    margin: 10px;
-    transform: translateX(-90%);
+    margin: 10px auto;
+    transform: translateX(-5rem);
     font-weight: 600;
     font-size: 15px;
     color: white;
